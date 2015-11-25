@@ -6,15 +6,17 @@
 (defn setup []
   (q/no-cursor)
   (q/smooth)
-  (simquant/user-record "Nils" "Weight"))
+  {})
 
 (defn update-state [state]
   state)
 
-(defn draw-state [{:keys [data]}]
-  (q/translate 100 0)
+(defn draw-state [state]
+  (q/scale 1 -1)
+  (q/scale 2)
   (q/background 30)
-  (doseq [[x y] data]
+  (q/translate 100 -150)
+  (doseq [[x y] (:data (simquant/user-record "Nils" "Weight"))]
     (q/ellipse x y 10 10)))
 
 #_
