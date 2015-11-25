@@ -1,20 +1,18 @@
 (ns simquant.core
   (:require [simquant.fixtures :as fixtures]))
 
-(defn interval-length [[start end]]
-  (- end start))
+(defmulti scale (fn [type _ _] type))
 
-(defmulti scale :type)
+(defn linear-equation [m b]
+  (fn [x] (+ (* m x) b)))
 
 (defmethod scale :linear
-  [{:keys [domain range]}]
-  (let [domain-length (interval-length domain)
-        range-length (interval-length range)]
-    (fn [x] (+ (first range)
-               (* (/ x domain-length) range-length)))))
+  [_ [domain-start domain-end] [range-start range-end]]
+  (let [domain-length (- domain-end domain-start)
+        range-length (- range-end range-start)]
+    (linear-equation (/ range-length domain-length) range-start)))
 
-(def app-state
-  (atom fixtures/user-data))
+(def app-state (atom fixtures/user-data))
 
 (defn user-record [username record-name]
   (-> @app-state
