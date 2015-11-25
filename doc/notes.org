@@ -1,0 +1,12 @@
+* Features
+  - everything tracked as a timeseries
+  - user profiles
+    - name
+    - avatar
+  - trackable data
+    - weight
+    - training
+      - duration
+      - distance
+      - kcals
+      - type of sport
