@@ -10,12 +10,16 @@
     (let [linear-scale (scale :linear [0 1] [10 20])]
       (is (= (linear-scale 0) 10))
       (is (= (linear-scale 0.5) 15.0))
-      (is (= (linear-scale 1) 20)))))
+      (is (= (linear-scale 1) 20)))
+    (let [linear-scale (scale :linear [10 30] [100 200])]
+      (is (= (linear-scale 10) 100))
+      (is (= (linear-scale 20) 150))
+      (is (= (linear-scale 30) 200)))))
 
 (def distinct-doubles-gen
   (generators/not-empty (generators/vector-distinct generators/int {:num-elements 2})))
 
-(defspec linear-scale-range 3000
+(defspec linear-scale-range-properties 3000
   (properties/for-all [domain distinct-doubles-gen
                        range distinct-doubles-gen
                        value generators/int]
@@ -23,6 +27,7 @@
                             domain-length (- (last domain) (first domain))
                             range-length (- (last range) (first range))
                             m (/ range-length domain-length)
-                            b (first range)]
+                            b (first range)
+                            offset (first domain)]
                         (is (= (linear-scale value)
-                               (+ (* m value) b))))))
+                               (+ (* m (- value offset)) b))))))

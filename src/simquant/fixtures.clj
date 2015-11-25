@@ -9,6 +9,8 @@
                                                     [3 89]
                                                     [10 75]
                                                     [15 83]
+                                                    [80 73]
+                                                    [90 80]
                                                     ]}
                                    "Sports" {:title "Sports"
                                              :dimensions [:time :duration :distance :kcals :type]

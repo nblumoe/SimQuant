@@ -9,8 +9,9 @@
 (defmethod scale :linear
   [_ [domain-start domain-end] [range-start range-end]]
   (let [domain-length (- domain-end domain-start)
-        range-length (- range-end range-start)]
-    (linear-equation (/ range-length domain-length) range-start)))
+        range-length (- range-end range-start)
+        m (/ range-length domain-length)]
+    (linear-equation m (- range-start (* m domain-start)))))
 
 (def app-state (atom fixtures/user-data))
 

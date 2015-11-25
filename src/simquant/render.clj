@@ -4,7 +4,6 @@
             [simquant.core :as simquant]))
 
 (defn setup []
-  (q/no-cursor)
   (q/smooth)
   {})
 
@@ -12,12 +11,17 @@
   state)
 
 (defn draw-state [state]
-  (q/scale 1 -1)
-  (q/scale 2)
   (q/background 30)
-  (q/translate 100 -150)
-  (doseq [[x y] (:data (simquant/user-record "Nils" "Weight"))]
-    (q/ellipse x y 10 10)))
+  (let [canvas-shortest-edge (min (q/width) (q/height))
+        canvas-margin (* canvas-shortest-edge 0.15)
+        canvas-max-x (- (q/width) canvas-margin)
+        canvas-max-y (- (q/height) canvas-margin)
+        x-scale (simquant/scale :linear [0 100] [canvas-margin canvas-max-x])
+        y-scale (simquant/scale :linear [70 100] [canvas-max-y canvas-margin])
+        dia-scale (simquant/scale :linear [0 1] [(* canvas-shortest-edge 0.001) (* canvas-shortest-edge 0.05)])
+        diameter (dia-scale 1)]
+    (doseq [[x y] (:data (simquant/user-record "Nils" "Weight"))]
+      (q/ellipse (x-scale x) (y-scale y) diameter diameter))))
 
 #_
 (q/defsketch color-spectrum-circle
